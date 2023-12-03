@@ -97,6 +97,8 @@ document.querySelectorAll(".page-link").forEach((link) =>
 
                 loadedContents[page] = content;
                 currentPage.innerHTML = content;
+
+                if (page === "about") document.getElementById("age").innerText = new Date().getFullYear() - 2009;
             })
             .finally(() => (currentPage.dataset.page = page));
     })
