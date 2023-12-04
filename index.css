@@ -5,17 +5,8 @@
 }
 
 body {
-    position: absolute;
     margin: 0;
-    width: 200vw;
-    height: 200vh;
-    display: flex;
     overflow: hidden;
-}
-
-body > div {
-    width: 100vw;
-    height: 100vh;
 }
 
 .main-title {
@@ -65,31 +56,33 @@ a:hover {
     box-shadow: 0 2px 0 0 rgb(0, 150, 255);
 }
 
-#main-page,
-#current-page {
+main,
+section {
+    width: 100vw;
+    height: 100vh;
+    position: relative;
+    overflow: hidden;
     flex-direction: column;
     user-select: none;
 }
 
-#main-page {
-    position: relative;
-    overflow: hidden;
-}
-
-#current-page {
-    font-size: calc(14px + 0.5vw);
-}
-
-#current-page,
+section,
 .content,
-#main-page,
-#main-page > div {
+main,
+main > div {
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-#main-page > div {
+section {
+    background-color: white;
+    position: absolute;
+    display: none;
+    font-size: calc(14px + 0.5vw);
+}
+
+main > div {
     gap: 4vw;
 }
 
@@ -100,6 +93,24 @@ a:hover {
 
 .content > div {
     padding: 20px;
+}
+
+#osu {
+    left: -100vw;
+}
+
+#coding {
+    left: 100vw;
+}
+
+#osu,
+#coding {
+    top: 0;
+}
+
+#about {
+    left: 0;
+    top: 100vh;
 }
 
 @media (max-width: 600px) {

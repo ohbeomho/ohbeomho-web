@@ -9,12 +9,13 @@
 </head>
 
 <body>
-    <div id="main-page">
+    <main>
         <span style="position: absolute; left: 10px; top: 10px; white-space: nowrap">
             Source on <a href="https://github.com/OhBeomho/ohbeomho-web">
                 <i class="fa-brands fa-github"></i> GitHub
             </a><br />
-            Font: <a href="https://fonts.google.com/specimen/Rubik+Mono+One">Rubik Mono One</a>
+            Font: <a href="https://fonts.google.com/specimen/Rubik+Mono+One">Rubik Mono One</a><br />
+            Icons: <a href="https://fontawesome.com/">FontAwesome</a>
         </span>
         <div>
             <div class="page-link" data-page="osu">osu!</div>
@@ -22,8 +23,89 @@
             <div class="page-link" data-page="coding">Coding</div>
         </div>
         <div class="page-link" data-page="about">About</div>
-    </div>
-    <div id="current-page"></div>
+    </main>
+    <section id="osu">
+        <div class="content">
+            <div>
+                <h1>Me and osu!</h1>
+                <p>
+                    I started playing osu in November 2022.<br />
+                    I played the game and I enjoyed it.<br />
+                    I'm still enjoying the game and<br />
+                    I don't think I'll stop playing osu! anytime soon.
+                </p>
+                <p>
+                    I'm currently rank 75k and I play with mouse and keyboard.<br />
+                    <a href="https://osu.ppy.sh/users/31971539" target="_blank">
+                        <i class="fa-solid fa-user"></i> osu! profile
+                    </a>
+                </p>
+            </div>
+            <div>
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1e/Osu%21_Logo_2016.svg/240px-Osu%21_Logo_2016.svg.png"
+                    alt="">
+            </div>
+            <div>
+                <button onclick="backToMain()">
+                    <i class="fa-solid fa-arrow-right"></i>
+                </button>
+            </div>
+        </div>
+    </section>
+    <section id="coding">
+        <div class="content">
+            <div>
+                <button onclick="backToMain()">
+                    <i class="fa-solid fa-arrow-left"></i>
+                </button>
+            </div>
+            <div>
+                <h1>Me and coding</h1>
+                <p>
+                    In 2019, I spent more time at home due to COVID-19.<br />
+                    And then I became interested in programming.
+                </p>
+                <p>
+                    I first started with C language. Then I tried Java, C#, Python, and more.<br />
+                    Now I code with javascript/typescript.
+                </p>
+            </div>
+            <div>
+                <i class="fa-solid fa-code" style="font-size: 100px"></i>
+            </div>
+        </div>
+    </section>
+    <section id="about">
+        <div class="content" style="flex-direction: column">
+            <button onclick="backToMain()">
+                <i class="fa-solid fa-arrow-up"></i>
+            </button>
+            <div class="content" style="height: auto">
+                <div>
+                    <h1>Who am I?</h1>
+                    <p>
+                        I'm <span id="age"></span>-year-old kid from South Korea.<br />
+                        I like playing osu! and solving coding problems.
+                    </p>
+                    <h3>Links</h3>
+                    <p>
+                        <a href="https://www.youtube.com/channel/UCW912uK5u7Tvz8P6AsvG9rg" target="_blank">
+                            <i class="fa-brands fa-youtube"></i> Youtube
+                        </a><br />
+                        <a href="https://www.twitch.tv/ohbeomho" target="_blank">
+                            <i class="fa-brands fa-twitch"></i> Twitch
+                        </a><br />
+                        <a href="https://github.com/OhBeomho" target="_blank">
+                            <i class="fa-brands fa-github"></i> GitHub
+                        </a>
+                    </p>
+                </div>
+                <div>
+                    <img src="../assets/bemologo.png" alt="" />
+                </div>
+            </div>
+        </div>
+    </section>
 
     <script src="https://cdn.jsdelivr.net/npm/showdown@2.1.0/dist/showdown.min.js"></script>
     <script src="https://kit.fontawesome.com/e217a51301.js" crossorigin="anonymous"></script>

@@ -1,115 +1,71 @@
-// 모바일 기기 감지
-// if (/Android|iPod|iPad|iPhone|BlackBerry|Windows Phone/i.test(navigator.userAgent)) {
-//     location.href = "/mobile.html";
-// }
+const main = document.querySelector("main");
+const osu = document.getElementById("osu");
+const coding = document.getElementById("coding");
+const about = document.getElementById("about");
 
-// 한번 불러온 페이지 내용 저장
-const loadedContents = {};
+// 나이 계산
+document.getElementById("age").innerText = new Date().getFullYear() - 2009;
 
-// (애니메이션을 위한) 페이지에 맞는 body 스타일
-const flexDir = {
-    about: "column",
-    osu: "row-reverse",
-    coding: "row"
+const pages = {
+    osu,
+    coding,
+    about
 };
 
-const mainPage = document.getElementById("main-page");
-const currentPage = document.getElementById("current-page");
+// 애니메이션 키프레임
+// 첫번째는 페이지, 두번째는 메인 페이지 키프레임
+const keyframes = {
+    osu: [
+        [{ left: "-100vw" }, { left: 0 }],
+        [{ left: 0 }, { left: "100vw" }]
+    ],
+    coding: [
+        [{ left: "100vw" }, { left: 0 }],
+        [{ left: 0 }, { left: "-100vw" }]
+    ],
+    about: [
+        [{ top: "100vh" }, { top: 0 }],
+        [{ top: 0 }, { top: "-100vh" }]
+    ]
+};
+
+// 애니메이션 옵션
+const options = {
+    fill: "forwards",
+    duration: 800,
+    easing: "cubic-bezier(.1,.65,.35,1)"
+};
+
+let activePage, activePageName;
 
 document.querySelectorAll(".page-link").forEach((link) =>
     link.addEventListener("click", () => {
-        if (currentPage.innerHTML) return;
+        if (activePage) return;
 
-        const page = link.dataset.page;
-        const loaded = loadedContents[page];
+        activePageName = link.dataset.page;
+        activePage = pages[activePageName];
 
-        document.body.style.flexDirection = flexDir[page];
+        activePage.style.display = "block";
 
-        if (page === "osu") document.body.style.left = "-100vw";
-        else document.body.style.left = "0";
+        activePage.animate(keyframes[activePageName][0], options);
+        main.animate(keyframes[activePageName][1], options);
 
-        // 애니메이션
-        const options = {
-            fill: "forwards",
-            duration: 1200,
-            easing: "cubic-bezier(.21,1.07,.64,1)"
-        };
-        mainPage.animate(
-            [
-                {
-                    width: "100vw",
-                    height: "100vh",
-                    opacity: 1
-                },
-                {
-                    width: page === "about" ? "100vw" : "0vw",
-                    height: page === "about" ? "0vh" : "100vh",
-                    opacity: 0
-                }
-            ],
-            options
-        );
-
-        if (loaded) {
-            currentPage.innerHTML = loaded;
-            currentPage.dataset.page = page;
-
-            if (page === "about") document.getElementById("age").innerText = new Date().getFullYear() - 2009;
-
-            return;
-        }
-
-        currentPage.innerHTML = "<h2>Loading...<h2>";
-
-        // 페이지 내용 불러오기
-        fetch(`./pages/${page}.html`)
-            .then((res) => res.text())
-            .then((content) => {
-                if (content.includes("meta")) {
-                    currentPage.innerHTML = `
-                        <div>
-                            <div style='text-align: center'>
-                                <span style='font-size: calc(16px + 2vw); color: rgb(200, 0, 0)'>
-                                    Failed to load page '${page}'
-                                </span><br />
-                                <button onclick='backToMain()'>Back</button>
-                            </div>
-                        </div>`;
-                    return;
-                }
-
-                loadedContents[page] = content;
-                currentPage.innerHTML = content;
-
-                if (page === "about") document.getElementById("age").innerText = new Date().getFullYear() - 2009;
-            })
-            .finally(() => (currentPage.dataset.page = page));
+        setTimeout(() => {
+            main.style.display = "none";
+        }, options.duration);
     })
 );
 
 function backToMain() {
-    const page = currentPage.dataset.page;
+    main.style.display = "flex";
 
-    const options = {
-        fill: "forwards",
-        duration: 1200,
-        easing: "cubic-bezier(.21,1.07,.64,1)"
-    };
-    mainPage.animate(
-        [
-            {
-                width: page === "about" ? "100vw" : "0vw",
-                height: page === "about" ? "0vh" : "100vh",
-                opacity: 0
-            },
-            {
-                width: "100vw",
-                height: "100vh",
-                opacity: 1
-            }
-        ],
-        options
-    );
+    activePage.animate(keyframes[activePageName][0].toReversed(), options);
+    main.animate(keyframes[activePageName][1].toReversed(), options);
 
-    setTimeout(() => (currentPage.innerHTML = ""), 1200);
+    setTimeout(() => {
+        activePage.style.display = "none";
+
+        activePage = undefined;
+        activePageName = undefined;
+    }, options.duration);
 }
