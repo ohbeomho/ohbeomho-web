@@ -56,16 +56,18 @@ document.querySelectorAll(".page-link").forEach((link) =>
     })
 );
 
-function backToMain() {
-    main.style.display = "flex";
+document.querySelectorAll("button").forEach((button) =>
+    button.addEventListener("click", () => {
+        main.style.display = "flex";
 
-    activePage.animate(keyframes[activePageName][0].toReversed(), options);
-    main.animate(keyframes[activePageName][1].toReversed(), options);
+        activePage.animate(keyframes[activePageName][0].toReversed(), options);
+        main.animate(keyframes[activePageName][1].toReversed(), options);
 
-    setTimeout(() => {
-        activePage.style.display = "none";
+        setTimeout(() => {
+            activePage.style.display = "none";
 
-        activePage = undefined;
-        activePageName = undefined;
-    }, options.duration);
-}
+            activePage = undefined;
+            activePageName = undefined;
+        }, options.duration);
+    })
+);
