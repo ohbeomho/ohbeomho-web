@@ -16,16 +16,16 @@ const pages = {
 // 첫번째는 페이지, 두번째는 메인 페이지 키프레임
 const keyframes = {
     osu: [
-        [{ left: "-100vw" }, { left: 0 }],
-        [{ left: 0 }, { left: "100vw" }]
+        [{ left: "-100svw" }, { left: 0 }],
+        [{ left: 0 }, { left: "100svw" }]
     ],
     coding: [
-        [{ left: "100vw" }, { left: 0 }],
-        [{ left: 0 }, { left: "-100vw" }]
+        [{ left: "100svw" }, { left: 0 }],
+        [{ left: 0 }, { left: "-100svw" }]
     ],
     about: [
-        [{ top: "100vh" }, { top: 0 }],
-        [{ top: 0 }, { top: "-100vh" }]
+        [{ top: "100svh" }, { top: 0 }],
+        [{ top: 0 }, { top: "-100svh" }]
     ]
 };
 
