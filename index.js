@@ -1,7 +1,7 @@
 // 모바일 기기 감지
-if (/Android|iPod|iPad|iPhone|BlackBerry|Windows Phone/i.test(navigator.userAgent)) {
-    location.href = "/mobile.html";
-}
+// if (/Android|iPod|iPad|iPhone|BlackBerry|Windows Phone/i.test(navigator.userAgent)) {
+//     location.href = "/mobile.html";
+// }
 
 // 한번 불러온 페이지 내용 저장
 const loadedContents = {};
@@ -25,6 +25,9 @@ document.querySelectorAll(".page-link").forEach((link) =>
 
         document.body.style.flexDirection = flexDir[page];
 
+        if (page === "osu") document.body.style.left = "-100vw";
+        else document.body.style.left = "0";
+
         // 애니메이션
         const options = {
             fill: "forwards",
@@ -42,21 +45,6 @@ document.querySelectorAll(".page-link").forEach((link) =>
                     width: page === "about" ? "100vw" : "0vw",
                     height: page === "about" ? "0vh" : "100vh",
                     opacity: 0
-                }
-            ],
-            options
-        );
-        currentPage.animate(
-            [
-                {
-                    width: page === "about" ? "100vw" : "0vw",
-                    height: page === "about" ? "0vh" : "100vh",
-                    opacity: 0
-                },
-                {
-                    width: "100vw",
-                    height: "100vh",
-                    opacity: 1
                 }
             ],
             options
@@ -118,21 +106,6 @@ function backToMain() {
                 width: "100vw",
                 height: "100vh",
                 opacity: 1
-            }
-        ],
-        options
-    );
-    currentPage.animate(
-        [
-            {
-                width: "100vw",
-                height: "100vh",
-                opacity: 1
-            },
-            {
-                width: page === "about" ? "100vw" : "0vw",
-                height: page === "about" ? "0vh" : "100vh",
-                opacity: 0
             }
         ],
         options

@@ -1,5 +1,14 @@
+@import url("https://fonts.googleapis.com/css2?family=Rubik+Mono+One&display=swap");
+
+* {
+    font-family: "Rubik Mono One", monospace;
+}
+
 body {
+    position: absolute;
     margin: 0;
+    width: 200vw;
+    height: 200vh;
     display: flex;
     overflow: hidden;
 }
@@ -10,7 +19,7 @@ body > div {
 }
 
 .main-title {
-    font-size: calc(25px + 5vw);
+    font-size: calc(10px + 5vw);
 }
 
 button {
@@ -21,22 +30,29 @@ button {
 a,
 button {
     cursor: pointer;
-    background-color: white;
     transition: box-shadow 0.2s;
 }
 
 .page-link {
     color: rgb(120, 120, 120);
-    font-size: calc(16px + 1.8vw);
+    font-size: calc(7px + 1.8vw);
 }
 
 button {
+    padding: 10px;
     font-size: calc(30px + 1.8vw);
 }
 
 a {
     color: rgb(0, 150, 255);
     text-decoration: none;
+    line-height: 2;
+}
+
+.page-link:hover,
+button:hover,
+a:hover {
+    background-color: white;
 }
 
 .page-link:hover,
@@ -55,10 +71,13 @@ a:hover {
     user-select: none;
 }
 
+#main-page {
+    position: relative;
+    overflow: hidden;
+}
+
 #current-page {
-    width: 0;
-    height: 0;
-    white-space: nowrap;
+    font-size: calc(14px + 0.5vw);
 }
 
 #current-page,
@@ -81,4 +100,10 @@ a:hover {
 
 .content > div {
     padding: 20px;
+}
+
+@media (max-width: 600px) {
+    .content {
+        flex-direction: column;
+    }
 }
