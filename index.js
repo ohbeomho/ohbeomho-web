@@ -3,6 +3,8 @@ const osu = document.getElementById("osu");
 const coding = document.getElementById("coding");
 const about = document.getElementById("about");
 
+const mainTitle = document.querySelector(".main-title");
+
 // 나이 계산
 document.getElementById("age").innerText = new Date().getFullYear() - 2009;
 
@@ -16,18 +18,26 @@ const pages = {
 // 첫번째는 페이지, 두번째는 메인 페이지 키프레임
 const keyframes = {
     osu: [
-        [{ left: "-100svw" }, { left: 0 }],
-        [{ left: 0 }, { left: "100svw" }]
+        [{ left: "-70svw" }, { left: 0 }],
+        [{ left: 0 }, { left: "70svw" }]
     ],
     coding: [
-        [{ left: "100svw" }, { left: 0 }],
-        [{ left: 0 }, { left: "-100svw" }]
+        [{ left: "70svw" }, { left: 0 }],
+        [{ left: 0 }, { left: "-70svw" }]
     ],
     about: [
-        [{ top: "100svh" }, { top: 0 }],
-        [{ top: 0 }, { top: "-100svh" }]
+        [{ top: "70svh" }, { top: 0 }],
+        [{ top: 0 }, { top: "-70svh" }]
     ]
 };
+
+// 키프레임에 투명도 옵션 추가
+for (let page in keyframes) {
+    const pageKeyframes = keyframes[page];
+
+    pageKeyframes[0][0].opacity = pageKeyframes[1][1].opacity = 0;
+    pageKeyframes[0][1].opacity = pageKeyframes[1][0].opacity = 1;
+}
 
 // 애니메이션 옵션
 const options = {
@@ -63,11 +73,26 @@ document.querySelectorAll("button").forEach((button) =>
         activePage.animate(keyframes[activePageName][0].toReversed(), options);
         main.animate(keyframes[activePageName][1].toReversed(), options);
 
-        setTimeout(() => {
-            activePage.style.display = "none";
+        const previousPage = activePage;
+        setTimeout(() => (previousPage.style.display = "none"), options.duration);
 
-            activePage = undefined;
-            activePageName = undefined;
-        }, options.duration);
+        activePage = undefined;
+        activePageName = undefined;
     })
 );
+
+function isTouchDevice() {
+    return "ontouchstart" in window || navigator.maxTouchPoints > 0 || navigator.msMaxTouchPoints > 0;
+}
+
+if (!isTouchDevice()) {
+    window.addEventListener("mousemove", (e) => {
+        // 3D rotate effect
+        const rotateXAxis = (window.innerHeight / 2 - e.clientY) * (6 / (window.innerHeight / 2));
+        const rotateYAxis = (window.innerWidth / 2 - e.clientX) * (-3 / (window.innerWidth / 2));
+        (activePage
+            ? activePage.querySelector(".content")
+            : main.querySelector(".content")
+        ).style.transform = `perspective(700px) rotateX(${rotateXAxis}deg) rotateY(${rotateYAxis}deg)`;
+    });
+}
