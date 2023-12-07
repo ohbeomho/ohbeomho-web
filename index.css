@@ -74,13 +74,6 @@ a {
     padding: 4px;
 }
 
-.page-link,
-a,
-button,
-button > * {
-    transition: all 0.2s;
-}
-
 .page-link {
     font-size: calc(7px + 1.8vw);
 }
@@ -92,7 +85,14 @@ button {
 }
 
 .page-link,
-button {
+a,
+button,
+button > * {
+    transition: all 0.2s;
+}
+
+.page-link,
+button > * {
     color: rgb(160, 160, 160);
 }
 
