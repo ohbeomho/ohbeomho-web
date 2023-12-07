@@ -96,3 +96,31 @@ if (!isTouchDevice()) {
         ).style.transform = `perspective(700px) rotateX(${rotateXAxis}deg) rotateY(${rotateYAxis}deg)`;
     });
 }
+
+// 눈 내리는 효과 (for christmas)
+
+const snowflakes = [];
+
+function createSnowflake() {
+    const snowflake = document.createElement("div");
+    snowflake.classList.add("snowflake");
+    snowflake.style.top = "calc(-20px - 0.5vw)";
+    snowflake.style.left = `${Math.random() * window.visualViewport.width - 30}px`;
+    snowflake.style.opacity = Math.random() * 0.4 + 0.2;
+    snowflake.innerHTML = "<i class='fa-solid fa-snowflake'></i>";
+    snowflake
+        .animate([{ top: `${window.visualViewport.height}px`, transform: `rotate(${Math.random() * 720 - 360}deg)` }], {
+            fill: "forwards",
+            duration: 10000,
+            easing: "ease-in"
+        })
+        .addEventListener("finish", () => {
+            snowflakes.splice(snowflakes.indexOf(snowflake), 1);
+            snowflake.remove();
+        });
+
+    document.body.appendChild(snowflake);
+}
+
+createSnowflake();
+setInterval(createSnowflake, 400);

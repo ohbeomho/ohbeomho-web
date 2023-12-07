@@ -2,6 +2,11 @@
 
 * {
     font-family: "Rubik Mono One", monospace;
+    color: white;
+}
+
+html {
+    background-color: rgb(25, 25, 25);
 }
 
 body {
@@ -9,17 +14,74 @@ body {
     overflow: hidden;
 }
 
-.main-title {
-    font-size: calc(10px + 5vw);
+/* Sections */
+
+section,
+.content,
+main .content > div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
+
+section {
+    display: none;
+    font-size: calc(14px + 0.5vw);
+}
+
+main,
+section {
+    width: 100svw;
+    height: 100svh;
+    overflow: hidden;
+    position: absolute;
+    flex-direction: column;
+    user-select: none;
+}
+
+.content {
+    width: 100%;
+    height: 100%;
+}
+
+.content > div {
+    padding: 10px;
+}
+
+#osu {
+    left: -100svw;
+}
+
+#coding {
+    left: 100svw;
+}
+
+#osu,
+#coding {
+    top: 0;
+}
+
+#about {
+    left: 0;
+    top: 100svh;
+}
+
+/* Buttons, Links */
 
 button {
     all: unset;
 }
 
+a {
+    text-decoration: none;
+    line-height: 2;
+    padding: 4px;
+}
+
 .page-link,
 a,
-button {
+button,
+button > * {
     transition: all 0.2s;
 }
 
@@ -33,17 +95,6 @@ button {
     font-size: calc(30px + 1.8vw);
 }
 
-a {
-    color: rgb(0, 150, 255);
-    text-decoration: none;
-    line-height: 2;
-    padding: 4px;
-}
-
-a:hover {
-    background-color: white;
-}
-
 .page-link:hover,
 button:hover {
     color: rgb(0, 150, 255);
@@ -55,56 +106,10 @@ a:hover {
     box-shadow: 0 0 0 3px rgb(0, 150, 255);
 }
 
-main,
-section {
-    width: 100svw;
-    height: 100svh;
-    position: relative;
-    overflow: hidden;
-    flex-direction: column;
-    user-select: none;
-}
-
-section,
-.content,
-main .content > div {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-section {
-    background-color: white;
-    position: absolute;
-    display: none;
-    font-size: calc(14px + 0.5vw);
-}
-
-.content {
-    width: 100%;
-    height: 100%;
-}
-
-.content > div {
-    padding: 10px;
-}
-
-#osu {
-    left: -100vw;
-}
-
-#coding {
-    left: 100vw;
-}
-
-#osu,
-#coding {
-    top: 0;
-}
-
-#about {
-    left: 0;
-    top: 100vh;
+a,
+a > *,
+button:hover > * {
+    color: rgb(0, 150, 255);
 }
 
 #osu button {
@@ -115,9 +120,25 @@ section {
     margin-right: calc(20px + 2vw);
 }
 
+/* Images */
+
 img {
     width: calc(150px + 5vw);
     height: calc(150px + 5vw);
+}
+
+/* Etc. */
+
+.main-title {
+    font-size: calc(10px + 5vw);
+}
+
+/* Snowflakes */
+
+.snowflake {
+    position: absolute;
+    font-size: calc(16px + 0.5vw);
+    z-index: -1000;
 }
 
 @media (max-width: 600px) {
