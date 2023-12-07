@@ -68,10 +68,6 @@ section {
 
 /* Buttons, Links */
 
-button {
-    all: unset;
-}
-
 a {
     text-decoration: none;
     line-height: 2;
@@ -86,13 +82,18 @@ button > * {
 }
 
 .page-link {
-    color: rgb(160, 160, 160);
     font-size: calc(7px + 1.8vw);
 }
 
 button {
+    all: unset;
     padding: 10px;
     font-size: calc(30px + 1.8vw);
+}
+
+.page-link,
+button {
+    color: rgb(160, 160, 160);
 }
 
 .page-link:hover,
