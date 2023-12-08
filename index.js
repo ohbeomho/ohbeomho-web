@@ -5,6 +5,9 @@ const about = document.getElementById("about");
 
 const mainTitle = document.querySelector(".main-title");
 
+const changeThemeButton = document.getElementById("change-theme");
+const toggleSnowflakeButton = document.getElementById("toggle-snowflake");
+
 // 나이 계산
 document.getElementById("age").innerText = new Date().getFullYear() - 2009;
 
@@ -66,7 +69,7 @@ document.querySelectorAll(".page-link").forEach((link) =>
     })
 );
 
-document.querySelectorAll("button").forEach((button) =>
+document.querySelectorAll("button.back").forEach((button) =>
     button.addEventListener("click", () => {
         main.style.display = "flex";
 
@@ -122,5 +125,58 @@ function createSnowflake() {
     document.body.appendChild(snowflake);
 }
 
-createSnowflake();
-setInterval(createSnowflake, 400);
+// 쿠키 get/set
+function getCookie(name, defaultValue) {
+    const index = document.cookie.search(new RegExp(`${name}=`));
+
+    if (index !== -1) {
+        const str = document.cookie.slice(index + name.length + 1);
+        const semiIndex = str.indexOf(";");
+        return str.slice(0, semiIndex === -1 ? str.length : semiIndex);
+    }
+
+    return defaultValue;
+}
+
+function setCookie(name, value) {
+    document.cookie = `${name}=${encodeURIComponent(String(value))}; max-age=${60 * 60 * 24 * 10}`;
+}
+
+// 눈 내리는 효과 설정
+let snowflakeInterval,
+    snowflakeEnabled = getCookie("snowflake", false);
+
+function setSnowflake(enable) {
+    snowflakeEnabled = enable;
+    setCookie("snowflake", enable);
+
+    if (!enable) {
+        if (snowflakeInterval) clearInterval(snowflakeInterval);
+        toggleSnowflakeButton.classList.add("disabled");
+        return;
+    }
+
+    createSnowflake();
+    snowflakeInterval = setInterval(createSnowflake, 400);
+    toggleSnowflakeButton.classList.remove("disabled");
+}
+
+// 테마 설정
+function setTheme(theme) {
+    document.body.dataset.theme = theme;
+
+    if (theme === "dark") {
+        changeThemeButton.classList.remove("disabled");
+    } else {
+        changeThemeButton.classList.add("disabled");
+    }
+
+    setCookie("theme", theme);
+}
+
+// 테마/눈 내리는 효과 상태 불러오기
+setTheme(getCookie("theme", "light"));
+setSnowflake(snowflakeEnabled);
+
+changeThemeButton.addEventListener("click", () => setTheme(document.body.dataset.theme === "light" ? "dark" : "light"));
+toggleSnowflakeButton.addEventListener("click", () => setSnowflake(snowflakeEnabled ? false : true));

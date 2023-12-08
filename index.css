@@ -1,17 +1,29 @@
 @import url("https://fonts.googleapis.com/css2?family=Rubik+Mono+One&display=swap");
 
-* {
-    font-family: "Rubik Mono One", monospace;
-    color: white;
+:root {
+    --primary-color: rgb(0, 150, 255);
+    --secondary-color: rgb(160, 160, 160);
 }
 
-html {
-    background-color: rgb(25, 25, 25);
+body[data-theme="light"] {
+    --color: black;
+    --background: white;
+}
+
+body[data-theme="dark"] {
+    --color: white;
+    --background: rgb(25, 25, 25);
+}
+
+* {
+    font-family: "Rubik Mono One", monospace;
+    color: var(--color);
 }
 
 body {
     margin: 0;
     overflow: hidden;
+    background-color: var(--background);
 }
 
 /* Sections */
@@ -72,6 +84,8 @@ a {
     text-decoration: none;
     line-height: 2;
     padding: 4px;
+    position: relative;
+    z-index: 1000;
 }
 
 .page-link {
@@ -81,6 +95,26 @@ a {
 button {
     all: unset;
     padding: 10px;
+}
+
+button#change-theme,
+button#toggle-snowflake {
+    position: relative;
+    z-index: 1000;
+    font-size: calc(20px + 1vw);
+}
+
+button#toggle-snowflake > *,
+button#change-theme > * {
+    color: var(--primary-color);
+}
+
+button#toggle-snowflake.disabled > *,
+button#change-theme.disabled > * {
+    color: var(--secondary-color);
+}
+
+button.back {
     font-size: calc(30px + 1.8vw);
 }
 
@@ -92,25 +126,25 @@ button > * {
 }
 
 .page-link,
-button > * {
-    color: rgb(160, 160, 160);
+button.back > * {
+    color: var(--secondary-color);
 }
 
 .page-link:hover,
 button:hover {
-    color: rgb(0, 150, 255);
+    color: var(--primary-color);
     scale: 1.1;
     cursor: pointer;
 }
 
 a:hover {
-    box-shadow: 0 0 0 3px rgb(0, 150, 255);
+    box-shadow: 0 0 0 3px var(--primary-color);
 }
 
 a,
 a > *,
 button:hover > * {
-    color: rgb(0, 150, 255);
+    color: var(--primary-color);
 }
 
 #osu button {
