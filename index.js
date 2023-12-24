@@ -84,21 +84,15 @@ document.querySelectorAll("button.back").forEach((button) =>
     })
 );
 
-function isTouchDevice() {
-    return "ontouchstart" in window || navigator.maxTouchPoints > 0 || navigator.msMaxTouchPoints > 0;
-}
-
-if (!isTouchDevice()) {
-    window.addEventListener("mousemove", (e) => {
-        // 3D rotate effect
-        const rotateXAxis = (window.innerHeight / 2 - e.clientY) * (6 / (window.innerHeight / 2));
-        const rotateYAxis = (window.innerWidth / 2 - e.clientX) * (-3 / (window.innerWidth / 2));
-        (activePage
-            ? activePage.querySelector(".content")
-            : main.querySelector(".content")
-        ).style.transform = `perspective(700px) rotateX(${rotateXAxis}deg) rotateY(${rotateYAxis}deg)`;
-    });
-}
+window.addEventListener("mousemove", (e) => {
+    // 3D rotate effect
+    const rotateXAxis = (window.innerHeight / 2 - e.clientY) * (6 / (window.innerHeight / 2));
+    const rotateYAxis = (window.innerWidth / 2 - e.clientX) * (-3 / (window.innerWidth / 2));
+    (activePage
+        ? activePage.querySelector(".content")
+        : main.querySelector(".content")
+    ).style.transform = `perspective(700px) rotateX(${rotateXAxis}deg) rotateY(${rotateYAxis}deg)`;
+});
 
 // 눈 내리는 효과 (for christmas)
 
@@ -139,12 +133,12 @@ function getCookie(name, defaultValue) {
 }
 
 function setCookie(name, value) {
-    document.cookie = `${name}=${encodeURIComponent(String(value))}; max-age=${60 * 60 * 24 * 10}`;
+    document.cookie = `${name}=${encodeURIComponent(String(value))}; max-age=${60 * 60 * 24 * 10}; SameSite=Lax`;
 }
 
 // 눈 내리는 효과 설정
 let snowflakeInterval,
-    snowflakeEnabled = getCookie("snowflake", false);
+    snowflakeEnabled = getCookie("snowflake", false) === "true";
 
 function setSnowflake(enable) {
     snowflakeEnabled = enable;
