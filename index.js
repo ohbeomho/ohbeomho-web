@@ -84,16 +84,6 @@ document.querySelectorAll("button.back").forEach((button) =>
     })
 );
 
-window.addEventListener("mousemove", (e) => {
-    // 3D rotate effect
-    const rotateXAxis = (window.innerHeight / 2 - e.clientY) * (6 / (window.innerHeight / 2));
-    const rotateYAxis = (window.innerWidth / 2 - e.clientX) * (-3 / (window.innerWidth / 2));
-    (activePage
-        ? activePage.querySelector(".content")
-        : main.querySelector(".content")
-    ).style.transform = `perspective(700px) rotateX(${rotateXAxis}deg) rotateY(${rotateYAxis}deg)`;
-});
-
 // 눈 내리는 효과 (for christmas)
 
 const snowflakes = [];
@@ -108,7 +98,7 @@ function createSnowflake() {
     snowflake
         .animate([{ top: `${window.visualViewport.height}px`, transform: `rotate(${Math.random() * 720 - 360}deg)` }], {
             fill: "forwards",
-            duration: 10000,
+            duration: Math.random() * 4000 + 4000,
             easing: "ease-in"
         })
         .addEventListener("finish", () => {
