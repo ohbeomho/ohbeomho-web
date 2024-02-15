@@ -1,7 +1,22 @@
+const ageElement = document.querySelector('.age')
+ageElement.innerHTML += ' ' + (new Date().getFullYear() - 2009)
+
 const container = document.querySelector('.container')
 const ohbeomhoText = document.querySelector('h1')
 let animating = false,
   left = 0
+const animateTexts = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ[]()1234567890,./\'";'
+
+const animateElements = [
+  {
+    title: 'INFO',
+    elements: 'p'
+  },
+  {
+    title: 'OSU!',
+    elements: '.rank div span, .pp'
+  }
+]
 
 const animateOptions = { duration: 500, fill: 'forwards', easing: 'cubic-bezier(.17,.67,0,1.07)' }
 
@@ -39,6 +54,33 @@ document.querySelectorAll('.title-text').forEach(element =>
       animating = true
       ohbeomhoText.animate([{ top: '-50%' }], animateOptions)
       container.animate([{ top: '-100%' }], animateOptions).onfinish = () => (animating = false)
+
+      document
+        .querySelectorAll(animateElements.find(a => a.title === element.innerText).elements)
+        .forEach((element, i) => {
+          const content = element.innerHTML
+
+          let d = 0
+
+          const i2 = setInterval(() => {
+            element.innerHTML = content.substring(0, d)
+            for (let i = content.length; i > d; i--) {
+              element.innerHTML += animateTexts.charAt(Math.floor(Math.random() * animateTexts.length))
+            }
+          }, 30)
+
+          setTimeout(() => {
+            const i1 = setInterval(() => {
+              d++
+
+              if (d === content.length) {
+                clearInterval(i1)
+                clearInterval(i2)
+                element.innerHTML = content
+              }
+            }, 70)
+          }, 100 + 200 * i)
+        })
     }
   })
 )
@@ -107,32 +149,32 @@ function animate() {
 
 requestAnimationFrame(animate)
 
-const client_info = {
+const clientInfo = {
   id: process.env.CLIENT_ID,
   secret: process.env.CLIENT_SECRET
 }
 
-const cors_api_host = process.env.CORS_API_HOST
+const corsApiHost = process.env.CORS_API_HOST
 
-let token_info = localStorage.getItem('osu-api-token')
-const profile_element = document.getElementById('profile')
+let tokenInfo = localStorage.getItem('osu-api-token') ? JSON.parse(localStorage.getItem('osu-api-token')) : undefined
+const profileElement = document.getElementById('profile')
 
-if (!token_info || JSON.parse(token_info).expiry_date < new Date().getTime()) {
-  profile_element.innerHTML = 'Getting osu!api access token...'
+if (!tokenInfo || tokenInfo.expiry_date < new Date().getTime()) {
+  profileElement.innerHTML = 'Getting osu!api access token...'
 
-  fetch(`${cors_api_host}/https://osu.ppy.sh/oauth/token`, {
+  fetch(`${corsApiHost}/https://osu.ppy.sh/oauth/token`, {
     method: 'post',
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/x-www-form-urlencoded'
     },
-    body: `client_id=${client_info.id}&client_secret=${client_info.secret}&grant_type=client_credentials&scope=public`
+    body: `client_id=${clientInfo.id}&client_secret=${clientInfo.secret}&grant_type=client_credentials&scope=public`
   })
     .then(res => res.json())
-    .then(data => {
-      const { access_token: token, expires_in } = data
-      token_info = { token, expiry_date: new Date().getTime() + expires_in * 1000 }
-      localStorage.setItem('osu-api-token', JSON.stringify(token_info))
+    .then(userData => {
+      const { access_token: token, expires_in } = userData
+      tokenInfo = { token, expiry_date: new Date().getTime() + expires_in * 1000 }
+      localStorage.setItem('osu-api-token', JSON.stringify(tokenInfo))
     })
     .finally(getProfile)
 } else {
@@ -140,23 +182,93 @@ if (!token_info || JSON.parse(token_info).expiry_date < new Date().getTime()) {
 }
 
 function getProfile() {
-  token_info = JSON.parse(token_info)
-  profile_element.innerHTML = 'Getting user data...'
+  profileElement.innerHTML = 'Getting user data...'
 
-  fetch(`${cors_api_host}/https://osu.ppy.sh/api/v2/users/31971539/osu`, {
+  fetch(`${corsApiHost}/https://osu.ppy.sh/api/v2/users/31971539/osu`, {
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
-      Authorization: `Bearer ${token_info.token}`
+      Authorization: `Bearer ${tokenInfo.token}`
     }
   })
     .then(res => res.json())
     .then(data => {
       console.log(data)
+      const rankHistory = data.rankHistory.data
+      let lowest = -Infinity,
+        highest = Infinity
 
-      const avatar = document.createElement('img')
+      for (let rank of rankHistory) {
+        if (rank > lowest) {
+          lowest = rank
+        }
+
+        if (rank < highest) {
+          highest = rank
+        }
+      }
+
+      profileElement.innerHTML = `
+        <img class='avatar' alt='user avatar' />
+        <span class='username'>${data.username}</span>
+        <div class='rank'>
+          <div>
+            Global Ranking<br />
+            <span>#${data.statistics.global_rank}</span>
+          </div>
+          <div>
+            Country Ranking<br />
+            <span>#${data.statistics.country_rank}</span>
+          </div>
+        </div>
+        <span class='pp'>${data.statistics.pp}pp</span>
+        <div>
+          <div><div>Rank History</div></div>
+          <div>
+            <div>
+              <canvas class='graph' height='150'></canvas>
+            </div>
+          </div>
+          <div style='display: flex; justify-content: space-between; align-items: center'>
+            <div>
+              Lowest: <span>#${lowest}</span>
+            </div>
+            <div>
+              Highest: <span>#${highest}</span>
+            </div>
+          </div>
+        </div>
+      `
+
+      // TODO: Graph animation maybe?
+      const graph = profileElement.querySelector('.graph')
+      const context = graph.getContext('2d')
+
+      graph.width = graph.offsetWidth
+
+      context.strokeStyle = 'white'
+      context.lineWidth = 3
+
+      const previousPos = { x: 0, y: 0 }
+
+      for (let i = 0; i < rankHistory.length; i++) {
+        const x = i * ((graph.offsetWidth - 40) / 90) + 20
+        const y = 5 + ((rankHistory[i] - highest) / (lowest - highest)) * 140
+
+        if (i > 0) {
+          context.beginPath()
+          context.moveTo(previousPos.x, previousPos.y)
+          context.lineTo(x, y)
+          context.stroke()
+        }
+
+        previousPos.x = x
+        previousPos.y = y
+      }
+
+      const avatar = profileElement.querySelector('.avatar')
+
       avatar.src = data.avatar_url
-      avatar.className = 'avatar'
 
       let isOWO = false
       avatar.addEventListener('click', () => {
@@ -172,25 +284,7 @@ function getProfile() {
           avatar.src = data.avatar_url
           avatar.animate([{ scale: 1.2 }, { scale: 1 }], { ...animateOptions, duration: 1200 })
           avatar.className = 'avatar'
-        }, 2000)
+        }, 1500)
       })
-
-      // TODO: Add more elements
-      profile_element.innerHTML = `
-        <span class='username'>${data.username}</span>
-        <div class='rank'>
-          <div>
-            Global Ranking<br />
-            <span>#${data.statistics.global_rank}</span>
-          </div>
-          <div>
-            Country Ranking<br />
-            <span>#${data.statistics.country_rank}</span>
-          </div>
-        </div>
-        <span class='pp'>${data.statistics.pp}pp</span>
-      `
-
-      profile_element.prepend(avatar)
     })
 }
