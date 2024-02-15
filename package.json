@@ -1,0 +1,21 @@
+{
+  "name": "ohbeomho-web",
+  "version": "1.0.0",
+  "description": "[![Netlify Status](https://api.netlify.com/api/v1/badges/bf7f0ed8-5c84-4e0a-84d1-f2ee0b6a8287/deploy-status)](https://app.netlify.com/sites/ohbeomho/deploys)",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack",
+    "watch": "webpack --watch"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "webpack": "^5.90.1",
+    "webpack-cli": "^5.1.4"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.4"
+  }
+}

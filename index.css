@@ -1,188 +1,156 @@
-@import url("https://fonts.googleapis.com/css2?family=Rubik+Mono+One&display=swap");
-
-:root {
-    --primary-color: rgb(0, 150, 255);
-    --secondary-color: rgb(160, 160, 160);
-}
-
-body[data-theme="light"] {
-    --color: black;
-    --background: white;
-}
-
-body[data-theme="dark"] {
-    --color: white;
-    --background: rgb(25, 25, 25);
-}
+@import url('https://fonts.googleapis.com/css2?family=Rubik+Mono+One&display=swap');
 
 * {
-    font-family: "Rubik Mono One", monospace;
-    color: var(--color);
+  font-family: 'Rubik Mono One', monospace;
 }
 
+html,
 body {
-    margin: 0;
-    overflow: hidden;
-    background-color: var(--background);
+  margin: 0;
+  height: 100%;
+  overflow: hidden;
+  background-color: rgb(0, 120, 200);
+  color: white;
 }
 
-/* Sections */
-
-section,
-.content,
-main .content > div {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+.container {
+  width: 300%;
+  height: 200%;
+  position: relative;
+  left: 0px;
+  top: 0px;
+  display: flex;
 }
 
-section {
-    display: none;
-    font-size: calc(14px + 0.5vw);
+.container > div,
+.title,
+.content {
+  flex: 1;
+  display: flex;
 }
 
-main,
-section {
-    width: 100svw;
-    height: 100svh;
-    overflow: hidden;
-    position: absolute;
-    flex-direction: column;
-    user-select: none;
+.container > div,
+.content {
+  flex-direction: column;
+}
+
+.title,
+.content {
+  justify-content: center;
+  align-items: center;
 }
 
 .content {
-    width: 100%;
-    height: 100%;
+  gap: 20px;
 }
 
-.content > div {
-    padding: 10px;
+h1 {
+  position: absolute;
+  top: 20%;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 3rem;
 }
 
-#osu {
-    left: -100svw;
+.title {
+  display: flex;
+  justify-content: space-around;
 }
 
-#coding {
-    left: 100svw;
+.title-text,
+.title > div,
+.button {
+  font-size: 6rem;
 }
 
-#osu,
-#coding {
-    top: 0;
+.title > span,
+.button {
+  transition: opacity 0.2s, scale 0.2s;
+  user-select: none;
+  cursor: pointer;
 }
 
-#about {
-    left: 0;
-    top: 100svh;
+.title > div {
+  padding: 20px;
 }
 
-/* Buttons, Links */
-
-a {
-    text-decoration: none;
-    line-height: 2;
-    padding: 4px;
-    position: relative;
-    z-index: 1000;
+.title > div:not(.button) {
+  opacity: 0;
 }
 
-.page-link {
-    font-size: calc(7px + 1.8vw);
+.button {
+  opacity: 0.3;
 }
 
-button {
-    all: unset;
-    padding: 10px;
+.title > span:hover,
+.button:hover {
+  scale: 1.1;
 }
 
-button#change-theme,
-button#toggle-snowflake {
-    position: relative;
-    z-index: 1000;
-    font-size: calc(20px + 1vw);
+.button:hover {
+  opacity: 1;
 }
 
-button#toggle-snowflake > *,
-button#change-theme > * {
-    color: var(--primary-color);
+.cursor {
+  position: absolute;
+  width: 50px;
+  height: 50px;
+  border-radius: 100%;
+  background-color: rgba(255, 255, 255, 0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-button#toggle-snowflake.disabled > *,
-button#change-theme.disabled > * {
-    color: var(--secondary-color);
+.cursor,
+h1 {
+  z-index: 1000;
+  pointer-events: none;
 }
 
-button.back {
-    font-size: calc(30px + 1.8vw);
+.title span {
+  display: block;
 }
 
-.page-link,
-a,
-button,
-button > * {
-    transition: all 0.2s;
+#profile {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
 }
 
-.page-link,
-button.back > * {
-    color: var(--secondary-color);
+#profile img {
+  min-width: 200px;
+  min-height: 200px;
+  width: 5vw;
+  height: 5vw;
 }
 
-.page-link:hover,
-button:hover {
-    color: var(--primary-color);
-    scale: 1.1;
-    cursor: pointer;
+#profile .username {
+  font-size: 2.5rem;
 }
 
-a:hover {
-    box-shadow: 0 0 0 3px var(--primary-color);
+#profile .avatar {
+  cursor: pointer;
 }
 
-a,
-a > *,
-button:hover > * {
-    color: var(--primary-color);
+#profile .rank {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  font-size: 1rem;
+  max-width: 500px;
+  width: 50vw;
 }
 
-#osu button {
-    margin-left: calc(20px + 2vw);
+#profile .rank div span {
+  font-size: 1.5rem;
+  color: rgb(255, 250, 0);
 }
 
-#coding button {
-    margin-right: calc(20px + 2vw);
-}
-
-/* Images */
-
-img {
-    width: calc(150px + 5vw);
-    height: calc(150px + 5vw);
-}
-
-/* Etc. */
-
-.main-title {
-    font-size: calc(10px + 5vw);
-}
-
-/* Snowflakes */
-
-.snowflake {
-    position: absolute;
-    font-size: calc(16px + 0.5vw);
-    z-index: -1000;
-}
-
-@media (max-width: 600px) {
-    .content {
-        flex-direction: column;
-    }
-
-    #osu button,
-    #coding button {
-        margin: 0;
-    }
+#profile .pp {
+  color: rgb(255, 150, 255);
+  font-size: 1.8rem;
 }
