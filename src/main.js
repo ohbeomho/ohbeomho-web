@@ -153,26 +153,18 @@ function animate() {
 
 requestAnimationFrame(animate)
 
-const clientInfo = {
-  id: process.env.CLIENT_ID,
-  secret: process.env.CLIENT_SECRET
-}
-
-const corsApiHost = process.env.CORS_API_HOST
-
-let tokenInfo = localStorage.getItem('osu-api-token') ? JSON.parse(localStorage.getItem('osu-api-token')) : undefined
 const profileElement = document.getElementById('profile')
 
 if (!tokenInfo || tokenInfo.expiry_date < new Date().getTime()) {
   profileElement.innerHTML = 'Getting osu!api access token...'
 
-  fetch(`${corsApiHost}/https://osu.ppy.sh/oauth/token`, {
+  fetch(`${process.env.CORS_API_HOST}/https://osu.ppy.sh/oauth/token`, {
     method: 'post',
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/x-www-form-urlencoded'
     },
-    body: `client_id=${clientInfo.id}&client_secret=${clientInfo.secret}&grant_type=client_credentials&scope=public`
+    body: `client_id=${process.env.CLIENT_ID}&client_secret=${process.env.CLIENT_SECRET}&grant_type=client_credentials&scope=public`
   })
     .then(res => res.json())
     .then(data => {
@@ -190,7 +182,7 @@ if (!tokenInfo || tokenInfo.expiry_date < new Date().getTime()) {
 function getProfile() {
   profileElement.innerHTML = 'Getting user data...'
 
-  fetch(`${corsApiHost}/https://osu.ppy.sh/api/v2/users/31971539/osu`, {
+  fetch(`${process.env.CORS_API_HOST}/https://osu.ppy.sh/api/v2/users/31971539/osu`, {
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
