@@ -10,11 +10,15 @@ const animateTexts = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ[]()12
 const animateElements = [
   {
     title: 'INFO',
-    elements: 'p'
+    elements: '#info p'
   },
   {
     title: 'OSU!',
-    elements: '.rank div span, .pp'
+    elements: '.rank div span, .pp, .rank-history div'
+  },
+  {
+    title: 'CODING',
+    elements: '#coding p'
   }
 ]
 
@@ -58,7 +62,7 @@ document.querySelectorAll('.title-text').forEach(element =>
       document
         .querySelectorAll(animateElements.find(a => a.title === element.innerText).elements)
         .forEach((element, i) => {
-          const content = element.innerHTML
+          const content = element.innerHTML.trim()
 
           let d = 0
 
@@ -78,7 +82,7 @@ document.querySelectorAll('.title-text').forEach(element =>
                 clearInterval(i2)
                 element.innerHTML = content
               }
-            }, 70)
+            }, 70 - content.length)
           }, 100 + 200 * i)
         })
     }
@@ -118,7 +122,7 @@ window.addEventListener('mousemove', e => {
 })
 
 function parallax(element, xdiff, ydiff) {
-  element.style.transform = `translateX(${xdiff / 100}px) translateY(${ydiff / 100}px)`
+  element.style.transform = `translateX(${xdiff / 150}px) translateY(${ydiff / 150}px)`
   element.childNodes.forEach(child => child instanceof Element && parallax(child, xdiff, ydiff))
 }
 
@@ -171,12 +175,14 @@ if (!tokenInfo || tokenInfo.expiry_date < new Date().getTime()) {
     body: `client_id=${clientInfo.id}&client_secret=${clientInfo.secret}&grant_type=client_credentials&scope=public`
   })
     .then(res => res.json())
-    .then(userData => {
-      const { access_token: token, expires_in } = userData
+    .then(data => {
+      const { access_token: token, expires_in } = data
       tokenInfo = { token, expiry_date: new Date().getTime() + expires_in * 1000 }
       localStorage.setItem('osu-api-token', JSON.stringify(tokenInfo))
+
+      getProfile()
     })
-    .finally(getProfile)
+    .catch(err => (profileElement.innerHTML = 'Error occurred') && console.log(err))
 } else {
   getProfile()
 }
@@ -192,9 +198,8 @@ function getProfile() {
     }
   })
     .then(res => res.json())
-    .then(data => {
-      console.log(data)
-      const rankHistory = data.rankHistory.data
+    .then(userData => {
+      const rankHistory = userData.rankHistory.data
       let lowest = -Infinity,
         highest = Infinity
 
@@ -210,18 +215,18 @@ function getProfile() {
 
       profileElement.innerHTML = `
         <img class='avatar' alt='user avatar' />
-        <span class='username'>${data.username}</span>
+        <span class='username'>${userData.username}</span>
         <div class='rank'>
           <div>
             Global Ranking<br />
-            <span>#${data.statistics.global_rank}</span>
+            <span>#${userData.statistics.global_rank}</span>
           </div>
           <div>
             Country Ranking<br />
-            <span>#${data.statistics.country_rank}</span>
+            <span>#${userData.statistics.country_rank}</span>
           </div>
         </div>
-        <span class='pp'>${data.statistics.pp}pp</span>
+        <span class='pp'>${userData.statistics.pp}pp</span>
         <div>
           <div><div>Rank History</div></div>
           <div>
@@ -229,12 +234,12 @@ function getProfile() {
               <canvas class='graph' height='150'></canvas>
             </div>
           </div>
-          <div style='display: flex; justify-content: space-between; align-items: center'>
+          <div style='display: flex; justify-content: space-between; align-items: center' class='rank-history'>
             <div>
-              Lowest: <span>#${lowest}</span>
+              Lowest: #${lowest}
             </div>
             <div>
-              Highest: <span>#${highest}</span>
+              Highest: #${highest}
             </div>
           </div>
         </div>
@@ -245,6 +250,7 @@ function getProfile() {
       const context = graph.getContext('2d')
 
       graph.width = graph.offsetWidth
+      graph.height = graph.offsetHeight
 
       context.strokeStyle = 'white'
       context.lineWidth = 3
@@ -268,7 +274,7 @@ function getProfile() {
 
       const avatar = profileElement.querySelector('.avatar')
 
-      avatar.src = data.avatar_url
+      avatar.src = userData.avatar_url
 
       let isOWO = false
       avatar.addEventListener('click', () => {
@@ -281,10 +287,11 @@ function getProfile() {
 
         setTimeout(() => {
           isOWO = false
-          avatar.src = data.avatar_url
+          avatar.src = userData.avatar_url
           avatar.animate([{ scale: 1.2 }, { scale: 1 }], { ...animateOptions, duration: 1200 })
           avatar.className = 'avatar'
         }, 1500)
       })
     })
+    .catch(err => (profileElement.innerHTML = 'Error occurred') && console.log(err))
 }
