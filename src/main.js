@@ -155,6 +155,8 @@ requestAnimationFrame(animate)
 
 const profileElement = document.getElementById('profile')
 
+let tokenInfo = localStorage.getItem('osu-api-token') ? JSON.parse(localStorage.getItem('osu-api-token')) : undefined
+
 if (!tokenInfo || tokenInfo.expiry_date < new Date().getTime()) {
   profileElement.innerHTML = 'Getting osu!api access token...'
 
