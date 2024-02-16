@@ -239,7 +239,7 @@ function getProfile() {
         </div>
       `
 
-      // TODO: Graph animation maybe?
+      // Graph animation maybe?
       const graph = profileElement.querySelector('.graph')
       const context = graph.getContext('2d')
 
@@ -275,14 +275,17 @@ function getProfile() {
         if (isOWO) return
 
         avatar.src = '/assets/bemo_owo.png'
-        avatar.animate([{ scale: 1 }, { scale: 1.2 }], { ...animateOptions, duration: 1200 })
+        avatar.animate([{ transform: 'scale(1)' }, { transform: 'scale(1.2)' }], { ...animateOptions, duration: 1200 })
         avatar.className = ''
         isOWO = true
 
         setTimeout(() => {
           isOWO = false
           avatar.src = userData.avatar_url
-          avatar.animate([{ scale: 1.2 }, { scale: 1 }], { ...animateOptions, duration: 1200 })
+          avatar.animate([{ transform: 'scale(1.2)' }, { transform: 'scale(1)' }], {
+            ...animateOptions,
+            duration: 1200
+          })
           avatar.className = 'avatar'
         }, 1500)
       })
