@@ -27,6 +27,11 @@ body {
   }
 }
 
+a {
+  color: rgb(255, 150, 255);
+  font-weight: bold;
+}
+
 .container {
   width: 300%;
   height: 200%;
@@ -135,10 +140,17 @@ h1 {
 .content > div:not(.button) {
   font-size: min(7vmin, 2rem);
   padding: min(4vmin, 3rem);
+  max-height: 100vh;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+#coding {
+  flex-direction: column;
+  gap: 20px;
 }
 
 #profile {
-  display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
@@ -204,4 +216,10 @@ h1 {
 h2,
 b {
   text-transform: uppercase;
+}
+
+@media screen and (max-height: 590px) {
+  #profile > div:last-child {
+    display: none;
+  }
 }
