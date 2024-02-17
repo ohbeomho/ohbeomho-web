@@ -1,7 +1,7 @@
-@import url('https://fonts.googleapis.com/css2?family=Rubik+Mono+One&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap');
 
 * {
-  font-family: 'Rubik Mono One', monospace;
+  font-family: 'Roboto Mono', monospace;
 }
 
 html,
@@ -9,7 +9,7 @@ body {
   margin: 0;
   height: 100%;
   overflow: hidden;
-  background-image: linear-gradient(120deg, rgb(0, 50, 200), rgb(0, 200, 255));
+  background-image: linear-gradient(120deg, rgb(0, 40, 180), rgb(0, 180, 220));
   background-size: 200% 200%;
   color: white;
   animation: bgAnim 10s infinite;
@@ -65,7 +65,7 @@ h1 {
   top: 20%;
   left: 50%;
   transform: translateX(-50%);
-  font-size: 3rem;
+  font-size: min(10vmin, 3rem);
 }
 
 .title {
@@ -76,7 +76,7 @@ h1 {
 .title-text,
 .title > div,
 .button {
-  font-size: 6rem;
+  font-size: min(10vmin, 6rem);
 }
 
 .title > span,
@@ -87,7 +87,7 @@ h1 {
 }
 
 .title > div {
-  padding: 20px;
+  padding: min(2vmin, 20px);
 }
 
 .title > div:not(.button) {
@@ -108,7 +108,7 @@ h1 {
 }
 
 .button.up {
-  margin-bottom: 5rem;
+  margin-bottom: min(8vmin, 5rem);
 }
 
 .cursor {
@@ -133,8 +133,8 @@ h1 {
 }
 
 .content > div:not(.button) {
-  font-size: 2rem;
-  padding: 3rem;
+  font-size: min(7vmin, 2rem);
+  padding: min(4vmin, 3rem);
 }
 
 #profile {
@@ -146,8 +146,8 @@ h1 {
 }
 
 #profile img {
-  width: 20vmin;
-  height: 20vmin;
+  width: max(20vmin, 150px);
+  height: max(20vmin, 150px);
 }
 
 #profile .avatar {
@@ -178,7 +178,6 @@ h1 {
   max-width: 500px;
   width: 95vw;
   aspect-ratio: 10 / 3;
-  padding: 20px;
   margin: 10px 0;
   border-radius: 20px;
   background-color: rgba(255, 255, 255, 0.2);
@@ -198,6 +197,11 @@ h1 {
 }
 
 #info img {
-  width: 25vmin;
-  height: 25vmin;
+  width: max(22vmin, 180px);
+  height: max(22vmin, 180px);
+}
+
+h2,
+b {
+  text-transform: uppercase;
 }
