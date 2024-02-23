@@ -2,6 +2,7 @@
 
 * {
   font-family: 'Roboto Mono', monospace;
+  cursor: none;
 }
 
 html,
@@ -88,7 +89,6 @@ h1 {
 .button {
   transition: opacity 0.2s, scale 0.2s;
   user-select: none;
-  cursor: pointer;
 }
 
 .title > div {
@@ -160,10 +160,6 @@ h1 {
 #profile img {
   width: max(20vmin, 150px);
   height: max(20vmin, 150px);
-}
-
-#profile .avatar {
-  cursor: pointer;
 }
 
 #profile .rank {
