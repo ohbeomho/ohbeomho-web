@@ -35,12 +35,15 @@ const animateElements = [
   }
 ]
 
-const animateOptions = { duration: 500, fill: 'forwards', easing: 'cubic-bezier(.17,.67,0,1.07)' }
+const animateOptions = { duration: 500, fill: 'forwards', easing: 'cubic-bezier(.17,.67,.36,.96)' }
+const panels = ['info', 'osu', 'coding'].map(panelClassName => document.querySelector(`.${panelClassName}`))
+let currentPanel = 0
 
 document.querySelectorAll('.left').forEach(element => {
   element.addEventListener('click', () => {
     if (!animating) {
       animating = true
+      currentPanel--
       container.animate([{ left: left + 100 + '%' }], animateOptions).onfinish = () => {
         animating = false
         left += 100
@@ -55,6 +58,7 @@ document.querySelectorAll('.right').forEach(element => {
   element.addEventListener('click', () => {
     if (!animating) {
       animating = true
+      currentPanel++
       container.animate([{ left: left - 100 + '%' }], animateOptions).onfinish = () => {
         animating = false
         left -= 100
@@ -160,7 +164,7 @@ if (!isMobile) {
 
     const xdiff = mousePos.x - window.innerWidth / 2
     const ydiff = mousePos.y - window.innerHeight / 2
-    parallax(container, xdiff, ydiff)
+    parallax(panels[currentPanel], xdiff, ydiff)
     ohbeomhoText.style.transform = `translateX(calc(${(xdiff / 150) * 2}px - 50%)) translateY(${(ydiff / 150) * 2}px)`
 
     requestAnimationFrame(animate)
